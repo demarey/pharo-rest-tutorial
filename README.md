@@ -2,7 +2,7 @@
 
 ## Introduction
 In this tutorial, you will learn how to set up a REST backend in a very short time with Pharo.
-This tutotial will use some Open Data to populate ther service. Our service will expose the list of Automated External Defibrillator (AED) available to the public in France. Data is provided by OpenStreetMap organisation at https://www.data.gouv.fr/fr/datasets/defibrillateurs-automatiques-externes-issus-dopenstreetmap/. 
+This tutotial will use some Open Data to populate the service. Our service will expose the list of Automated External Defibrillator (AED) available to the public in France. Data is provided by OpenStreetMap organisation at https://www.data.gouv.fr/fr/datasets/defibrillateurs-automatiques-externes-issus-dopenstreetmap/. 
 
 ## REST
 A RESTful web application exposes information about itself in the form of information about its resources. It also enables the client to take actions on those resources, such as create new resources (i.e. create a new user) or change existing resources (i.e. edit a post).
@@ -36,7 +36,7 @@ Pharo Launcher documentation is available at https://pharo-project.github.io/pha
 2. Download a fresh `Pharo 10.0 - 64bit` image through Pharo Launcher and launch it
 4. Clean the data
 An AED information can be splitted on many lines (description with line breaks). Let's uniformize the content.
-```smalltalk=
+```smalltalk
 csvFile := FileLocator home / 'aed_csv' / 'data.csv'.
 "Get lines from the data file without the header"
 lines := csvFile contents withInternalLineEndings lines copyWithoutFirst.
@@ -49,12 +49,10 @@ lines do: [ :line |
 	 ].
 ```
 
-7. 
-
 ### Create our domain objects
 Since our domain is about AED, let's create an AED object.
 We now have one line per AED. We can build our domain objects.
-```smalltalk=
+```smalltalk
 records collect: [ :each | | record |
 	record := $; split: each.
 	AED new
@@ -68,7 +66,7 @@ records collect: [ :each | | record |
 
 ## Basic REST back-end
 We will first load *Tealight* library that includes a micro web frameworks as well as small layer to ease its integration into Pharo.
-```smalltalk=
+```smalltalk
 Metacello new 
 	repository: 'github://astares/Tealight/repository';
 	baseline: 'Tealight';
