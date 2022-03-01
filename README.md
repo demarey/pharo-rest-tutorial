@@ -34,14 +34,6 @@ Pharo Launcher documentation is available at https://pharo-project.github.io/pha
     
     We will only use the `data.csv`file.
 2. Download a fresh `Pharo 10.0 - 64bit` image through Pharo Launcher and launch it
-3. We will load a library in our Pharo image to easily import the data.
-```smalltalk=
-Metacello new
-	repository: 'github://svenvc/NeoCSV/repository';
-	baseline: 'NeoCSV';
-	load.
-```
-You can find documentation on NeoCSV in **Enterprise Pharo** book: http://files.pharo.org/books-pdfs/entreprise-pharo/2016-10-06-EnterprisePharo.pdf.
 4. Clean the data
 An AED information can be splitted on many lines (description with line breaks). Let's uniformize the content.
 ```smalltalk=
@@ -142,6 +134,7 @@ aed printString  "'an AED'"
 ```
 
 We now need to define a serialization four our domain object. A widely used format is JSON.
+In pharo, we use the `NeoJSON` library.
 We will add a method `neoJsonMapping:` on the AED class that will specify how to map an EAD to a Json object:
 ```Smalltalk
 neoJsonMapping: mapper
