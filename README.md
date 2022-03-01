@@ -35,6 +35,7 @@ Pharo Launcher documentation is available at https://pharo-project.github.io/pha
     We will only use the `data.csv`file.
 2. Download a fresh `Pharo 10.0 - 64bit` image through Pharo Launcher and launch it
 4. Clean the data
+We could load the data with the `NeoCSV` library  but we will rather do it with pure Pharo for this tutorial.
 An AED information can be splitted on many lines (description with line breaks). Let's uniformize the content.
 ```smalltalk
 csvFile := FileLocator home / 'aed_csv' / 'data.csv'.
@@ -125,15 +126,16 @@ TLWebserver teapot
 ```
 If you point your browser to [http://localhost:8080/random](http://localhost:8080/random) you will receive "an AED" ...
 What happened?
-Our webserver receives an HTTP GET request on `/hi` URL. It then executes the associated action, getting a random AED in the store, and then provide it back in the HTTP answer. Objects cannot be transfered through HTTP. They need to be serialized. The default serialization used by our web server is the text representation of the object, i.e. the result of `#printString`method applied to the object.
+Our webserver receives an HTTP GET request on `/random` URL. It then executes the associated action, getting a random AED in the store, and then provide it back in the HTTP answer. Objects cannot be transfered through HTTP. They need to be serialized. The default serialization used by our web server is the text representation of the object, i.e. the result of `#printString`method applied to the object.
 ```Smalltalk
 aed := AEDStore default items atRandom.
 aed printString  "'an AED'"
 ```
 
-We now need to define a serialization four our domain object. A widely used format is JSON.
+We now need to define a serialization for our domain object. A widely used format is JSON.
 In pharo, we use the `NeoJSON` library.
-We will add a method `neoJsonMapping:` on the AED class that will specify how to map an EAD to a Json object:
+We will add a method `neoJsonMapping:` on the AED class that will specify how to map an EAD to a Json object.
+A class method in Pharo can be seen as a static method in Jave (as opposed to an instance method that can only be used on an instance and not a class).
 ```Smalltalk
 neoJsonMapping: mapper
 	mapper mapAllInstVarsFor: self.
