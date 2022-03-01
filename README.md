@@ -428,3 +428,18 @@ Here is the result of a call to a specific AED:
     }
 }
 ```
+
+## Resources
+To build this tutorial, I used some existing resources:
+- TeaLight documentation (Thank you @astares)
+- A REST introduction blog post: https://medium.com/extend/what-is-rest-a-simple-explanation-for-beginners-part-1-introduction-b4a072f8740f
+
+Libraries used in this project are:
+- Teapot https://github.com/zeroflag/Teapot/
+- TeaLight https://github.com/astares/Tealight
+- NeoJSON https://github.com/svenvc/NeoJson
+- Zinc https://github.com/svenvc/zinc/
+
+Pharo ecosystem also have other frameworks you can use to build REST services:
+- Stargate https://github.com/ba-st/Stargate/
+- Seaside Rest https://github.com/SeasideSt/Seaside
