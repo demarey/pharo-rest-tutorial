@@ -52,7 +52,13 @@ lines do: [ :line |
 
 ### Create our domain objects
 Since our domain is about AED, let's create an AED object.
-We now have one line per AED. We can build our domain objects.
+```smalltalk
+Object << #AED
+	slots: { #id . #latitude . #longitude . #city . #freeAccess . #accessInfo };
+	package: 'AA-RestTuto'
+```
+Once the AED class defined, we can generate accessors (getter and setters) automatically with the system browser (right-click on the class, then `generate accessors`).
+Since one record is now bound to one AED, we can build our domain objects.
 ```smalltalk
 records collect: [ :each | | record |
 	record := $; split: each.
@@ -62,8 +68,69 @@ records collect: [ :each | | record |
 		city: (record at: 11);
 		freeAccess:  (record at: 13) = 'oui';
 		accessInfo: (record at: 17);
-		yourself. ]
+		yourself. ].
 ```
+We now need to store our domain objects to made them available to our REST API. We could store them in a database but we will simply use an in-memory store for simplicity.
+```smalltalk
+Object << #AEDStore
+	slots: { #items };
+	sharedVariables: { #Default };
+	package: 'AA-RestTuto'
+```
+The `Default` shared variable (variable that is shared by all instances) will keep an instance of AEDStore, itself keeping the data: a collection of AEDs.
+We will define a method to access the default store:
+```smalltalk
+default
+	^ Default ifNil: [ Default := self new ]
+```
+To simplify the loading of the data, all the code we seen has been integrated into the AEDStore class. Import the [AEDStore-init.st](sources/AEDStore-init.st) file to get an AEDSotre able to load data from a file (drag and drop the file onto the Pharo image): 
+Then, we will load the data in the store:
+```smalltalk
+	AEDStore default loadFromFile: FileLocator home / 'aed_csv' / 'data.csv'.
+```
+Let's now take a look at the data we imported. You can open a *Playground* (CTRL+OP) and inspect the following expression (*Do It* button):
+```smalltalk
+AEDStore default.
+```
+The information displayed is not very useful. With Pharo, you can adapt tools to your needs, your domain. Let's add a custom inspection method on the AEDStore:
+```smalltalk
+inspectionItems: aBuilder
+	<inspectorPresentationOrder: 0 title: 'AED'> 
+	
+	^ aBuilder newTable
+		addColumn: (SpStringTableColumn new 
+			title: 'Index';
+			evaluated: [ :each | each id ];
+			beNotExpandable;
+			yourself);
+		addColumn: (SpStringTableColumn new 
+			title: 'Latitude';
+			evaluated: [ :each | each latitude ];
+			beNotExpandable;
+			yourself);
+		addColumn: (SpStringTableColumn new  
+			title: 'Longitude';
+			beNotExpandable;
+			evaluated: [ :each | each longitude ];
+			yourself);
+		addColumn: (SpStringTableColumn new 
+			title: 'City';
+			evaluated: [ :each | each city ];
+			sortFunction: #city ascending;
+			yourself);
+		addColumn: (SpCheckBoxTableColumn new 
+			title: 'Free access';
+			evaluated: [ :each | each freeAccess ];
+			sortFunction: #freeAccess ascending;
+			yourself);
+		addColumn: (SpStringTableColumn new  
+			title: 'Access info'; 
+			evaluated: [ :each | each accessInfo ];
+			yourself);
+		items: items asOrderedCollection;
+		yourself
+```
+This methods adds a custom tab named 'AED' when we inspect an AED instance. In the method above, we describe the UI to be displayed: a table with columns.
 
 ## Basic REST back-end
 We will first load *Tealight* library that includes a micro web frameworks as well as small layer to ease its integration into Pharo.
