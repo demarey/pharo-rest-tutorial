@@ -185,7 +185,7 @@ We recommend to read the [Teapot chapter of the Pharo Enterprise Book](https://c
 
 ## Bind the REST server with the domain
 
-We will now try to get the data of an EAD. Let us add a new route that will return a random AED.
+We will now try to get the data of an AED. Let us add a new route that will return a random AED.
 
 ```Smalltalk
 TLWebserver teapot 
@@ -201,7 +201,7 @@ aed printString  "'an AED'"
 
 We now need to define a serialization for our domain object. A widely used format is JSON.
 In pharo, we use the `NeoJSON` library.
-We will add a method `neoJsonMapping:` on the AED class that will specify how to map an EAD to a Json object.
+We will add a method `neoJsonMapping:` on the AED class that will specify how to map an AED to a Json object.
 A class method in Pharo can be seen as a static method in Jave (as opposed to an instance method that can only be used on an instance and not a class).
 ```Smalltalk
 neoJsonMapping: mapper
@@ -460,7 +460,7 @@ For each AED in the store, we collect the link to access the AED resource. This 
 
 You can now click on any resource to perform a new rest request and discover the resource.
 
-### Add a self link to EAD entities
+### Add a self link to AED entities
 A good practice in REST is to provide a self link to resources that are sent to the client.
 We can update our `#aed:` method to include a self link:
 ```Smalltalk
