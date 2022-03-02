@@ -133,7 +133,15 @@ inspectionItems: aBuilder
 This methods adds a custom tab named 'AED' when we inspect an AED instance. In the method above, we describe the UI to be displayed: a table with columns.
 
 ## Basic REST back-end
-We will first load *Tealight* library that includes a micro web frameworks as well as small layer to ease its integration into Pharo.
+We will load *Tealight* library that includes a micro web framework (Teapot) as well as small layer on top it to ease its integration into Pharo.
+First, we will load Teapot (that comes with Tealight) to get an updated version that is working on the very latest Pharo version:
+```smalltalk
+Metacello new 
+	repository: 'github://demarey/Teapot/repository';
+	baseline: 'Teapot';
+	load
+```
+Then, we can load Tealight:
 ```smalltalk
 Metacello new 
 	repository: 'github://astares/Tealight/repository';
@@ -491,7 +499,7 @@ Here is the result of a call to a specific AED:
 
 ## Resources
 To build this tutorial, I used some existing resources:
-- TeaLight documentation (Thank you @astares)
+- [TeaLight documentation](https://github.com/astares/Tealight/blob/master/README.md) (Thank you @astares)
 - A REST introduction blog post: https://medium.com/extend/what-is-rest-a-simple-explanation-for-beginners-part-1-introduction-b4a072f8740f
 
 Libraries used in this project are:
